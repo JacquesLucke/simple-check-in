@@ -29,9 +29,20 @@
       const check_in_out_button = document.getElementById("button");
       name_input.value = localStorage.getItem("name");
 
+      function dec2hex(dec) {
+        return dec.toString(16).padStart(2, "0");
+      }
+
+      // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+      function generate_id(len) {
+        var arr = new Uint8Array((len || 40) / 2);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr, dec2hex).join("");
+      }
+
       let uuid = localStorage.getItem("uuid");
       if (uuid === null) {
-        uuid = crypto.randomUUID();
+        uuid = generate_id();
         localStorage.setItem("uuid", uuid);
       }
 
