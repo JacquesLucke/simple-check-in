@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Check In</title>
+    <style>
+      input {
+        padding: 0.5em;
+        margin: 0.5em;
+      }
+      button {
+        margin: 0.5em;
+        padding: 0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <input
+      type="text"
+      placeholder="Name"
+      oninput="on_name_change()"
+      id="name-input"
+    />
+    <button id="button" onclick="on_button_press()">Check In</button>
+
+    <script>
+      const name_input = document.getElementById("name-input");
+      const check_in_out_button = document.getElementById("button");
+      name_input.value = localStorage.getItem("name");
+
+      let uuid = localStorage.getItem("uuid");
+      if (uuid === null) {
+        uuid = crypto.randomUUID();
+        localStorage.setItem("uuid", uuid);
+      }
+
+      let is_checked_in = localStorage.getItem("is_checked_in");
+      if (is_checked_in === null) {
+        is_checked_in = false;
+        localStorage.setItem("is_checked_in", is_checked_in);
+      }
+
+      function update_button_text() {
+        if (is_checked_in) {
+          check_in_out_button.innerText = "Check Out";
+        } else {
+          check_in_out_button.innerText = "Check In";
+        }
+      }
+
+      function on_name_change() {
+        name = name_input.value;
+        localStorage.setItem("name", name);
+      }
+
+      function on_button_press() {
+        const data = JSON.stringify({
+          name: name_input.value,
+          uuid: uuid,
+        });
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        if (is_checked_in) {
+          fetch("/check_out", {
+            method: "POST",
+            body: data,
+            headers,
+          });
+        } else {
+          fetch("/check_in", {
+            method: "POST",
+            body: data,
+            headers,
+          });
+        }
+
+        is_checked_in = !is_checked_in;
+        localStorage.setItem("is_checked_in", is_checked_in);
+        update_button_text();
+      }
+
+      update_button_text();
+    </script>
+  </body>
+</html>

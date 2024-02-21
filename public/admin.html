@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check In Admin</title>
+  </head>
+  <body>
+    The following people are checked in:
+    <ul id="list"></ul>
+
+    <script>
+      const checked_in_list = document.getElementById("list");
+
+      fetch("/checked_in").then((result) => {
+        result.json().then((result_json) => {
+          checked_in_list.innerHTML = "";
+          for (const [uuid, name] of Object.entries(result_json)) {
+            const list_element = document.createElement("li");
+            list_element.innerText = name;
+            checked_in_list.appendChild(list_element);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
