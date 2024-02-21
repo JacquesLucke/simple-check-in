@@ -1,0 +1,11 @@
+{
+  "name": "simple-check-in",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Jacques Lucke",
+  "license": "ISC"
+}
