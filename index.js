@@ -6,7 +6,7 @@ const checked_in = {};
 
 app.use(express.json());
 
-app.use(express.static("public"));
+app.use(express.static("public", { extensions: ["html"] }));
 
 app.post("/check_in", (req, res) => {
   checked_in[req.body.uuid] = req.body.name;
